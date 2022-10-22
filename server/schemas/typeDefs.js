@@ -15,6 +15,7 @@ type Case {
     dob: Date
     createdDate: Date
     notes: [Note]
+    users: [User]
 }
 
 type User {
@@ -22,7 +23,6 @@ type User {
     firstName: String
     lastName: String
     email: String
-    cases: [Case]
 }
 
 type Auth {
@@ -46,7 +46,8 @@ input CaseInput {
     bio: String
     dob: Date
     createdDate: Date
-    notes: [Note]
+    notes: [ID]
+    users: [ID]
 }
 
 input NoteInput {
@@ -54,8 +55,6 @@ input NoteInput {
     content: String
     createdDate: Date
 }
-
-
 
 type Mutation {
     addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
