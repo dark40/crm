@@ -8,36 +8,15 @@ const resolvers = {
         users: async () => {
             return await User.find()
         },
-        user: async (parent, args, context) => {
-            if (context.user) {
-                return await User.findById(context.user._id)
-            }
-
-            throw new AuthenticationError('Not logged in');
+        user: async (parent, { _id }) => {
+            return await User.findById(_id);
         },
         cases: async () => {
-            return await Case.find().populate(
-                {
-                    path: 'notes',
-                    populate: 'note'
-                },
-                {
-                    path: 'user',
-                    populate: 'user'
-                }
-            );
+            return await Case.find().populate('notes').populate('users');
+                
         },
         case: async (parent, { _id }) => {
-            return await Case.findById(_id).populate(
-                {
-                    path: 'notes',
-                    populate: 'note'
-                },
-                {
-                    path: 'user',
-                    populate: 'user'
-                }
-            );
+            return await Case.findById(_id).populate('notes').populate('users');
         },
         notes: async () => {
             return await Note.find();
@@ -74,23 +53,23 @@ const resolvers = {
         addCase: async (parent, args) => {
             return await Case.create(args);
         },
-        updateCase: async (parent, {_id}) => {
-            return await Case.findByIdAndUpdate(_id, {new: true});
+        updateCase: async (parent, { _id }) => {
+            return await Case.findByIdAndUpdate(_id, { new: true });
         },
-        removeCase: async (parent, {_id}) => {
+        removeCase: async (parent, { _id }) => {
             return await Case.deleteById(_id);
         },
-        addNote: async (parent, {notes}, context) => {
-            const note = new Note({notes})
+        addNote: async (parent, { notes }, context) => {
+            const note = new Note({ notes })
 
-            await Case.findByIdAndUpdate(context.case._id, {$push: {notes: note}});
+            await Case.findByIdAndUpdate(context.case._id, { $push: { notes: note } });
 
             return note;
         },
-        updateNote: async (parent, {_id}) => {
-            return await Note.findByIdAndUpdate(_id, {new: true});
+        updateNote: async (parent, { _id }) => {
+            return await Note.findByIdAndUpdate(_id, { new: true });
         },
-        removeNote: async (parent,{_id}) => {
+        removeNote: async (parent, { _id }) => {
             return await Note.deleteById(_id);
         }
     }

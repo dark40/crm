@@ -17,21 +17,23 @@ db.once('open', async () => {
     console.log('notes seeded');
 
     // add user
-    const users = await User.deleteMany();
+    await User.deleteMany();
 
-    await User.create({
-        firstName: 'Freddie',
-        lastName: 'Yang',
-        email: 'freddie@freddie.com',
-        password: '12345678'
-    });
+    const users = await User.insertMany([
+        {
+            firstName: 'Freddie',
+            lastName: 'Yang',
+            email: 'freddie@freddie.com',
+            password: '12345678'
+        },
+        {
+            firstName: 'Felix',
+            lastName: 'Lee',
+            email: 'felixe@felix.com',
+            password: '12345678'
+        }
 
-    await User.create({
-        firstName: 'Felix',
-        lastName: 'Lee',
-        email: 'felixe@felix.com',
-        password: '12345678'
-    });
+    ]);
 
     console.log('users seeded');
 

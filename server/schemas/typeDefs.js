@@ -4,7 +4,7 @@ const typeDefs = gql`
 type Note {
     _id: ID 
     content: String
-    createdDate: Date
+    createdDate: String
 }
 
 type Case {
@@ -12,8 +12,8 @@ type Case {
     firstName: String
     lastName: String
     bio: String
-    dob: Date
-    createdDate: Date
+    dob: String
+    createdDate: String
     notes: [Note]
     users: [User]
 }
@@ -32,11 +32,11 @@ type Auth {
 
 type Query {
     users: [User]
-    user(userId: ID!): User
+    user(_id: ID!): User
     cases: [Case]
-    case(caseId: ID!): Case
+    case(_id: ID!): Case
     notes: [Note]
-    note(noteId: ID!): Note
+    note(_id: ID!): Note
 }
 
 input CaseInput {
@@ -44,8 +44,8 @@ input CaseInput {
     firstName: String
     lastName: String
     bio: String
-    dob: Date
-    createdDate: Date
+    dob: String
+    createdDate: String
     notes: [ID]
     users: [ID]
 }
@@ -53,7 +53,7 @@ input CaseInput {
 input NoteInput {
     _id: ID 
     content: String
-    createdDate: Date
+    createdDate: String
 }
 
 type Mutation {
