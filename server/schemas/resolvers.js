@@ -71,7 +71,28 @@ const resolvers = {
 
             return { token, user }
         },
-        addCase: async
+        addCase: async (parent, args) => {
+            return await Case.create(args);
+        },
+        updateCase: async (parent, {_id}) => {
+            return await Case.findByIdAndUpdate(_id, {new: true});
+        },
+        removeCase: async (parent, {_id}) => {
+            return await Case.deleteById(_id);
+        },
+        addNote: async (parent, {notes}, context) => {
+            const note = new Note({notes})
+
+            await Case.findByIdAndUpdate(context.case._id, {$push: {notes: note}});
+
+            return note;
+        },
+        updateNote: async (parent, {_id}) => {
+            return await Note.findByIdAndUpdate(_id, {new: true});
+        },
+        removeNote: async (parent,{_id}) => {
+            return await Note.deleteById(_id);
+        }
     }
 };
 
