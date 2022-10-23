@@ -13,7 +13,7 @@ const resolvers = {
         },
         cases: async () => {
             return await Case.find().populate('notes').populate('users');
-                
+
         },
         case: async (parent, { _id }) => {
             return await Case.findById(_id).populate('notes').populate('users');
@@ -51,27 +51,50 @@ const resolvers = {
             return { token, user }
         },
         addCase: async (parent, args) => {
-            return await Case.create(args);
+            return await Case.create({ ...args });
         },
-        updateCase: async (parent, { _id }) => {
-            return await Case.findByIdAndUpdate(_id, { new: true });
+        updateCase: async (parent, args) => {
+            return await Case.findByIdAndUpdate(args._id, { ...args }, { new: true });
         },
-        removeCase: async (parent, { _id }) => {
-            return await Case.deleteById(_id);
+        removeCase: async (parent, args) => {
+            return await Case.findOneAndDelete({ _id: args._id });
         },
-        addNote: async (parent, { notes }, context) => {
-            const note = new Note({ notes })
-
-            await Case.findByIdAndUpdate(context.case._id, { $push: { notes: note } });
-
-            return note;
+        addNote: async (parent, { content }) => {
+            return await Note.create({ content })
         },
-        updateNote: async (parent, { _id }) => {
-            return await Note.findByIdAndUpdate(_id, { new: true });
+        addNoteToCase: async (parent, { caseId, noteId }) => {
+            return await(
+                Case.findOneAndUpdate(
+                    { _id: caseId },
+                    { $addToSet: { notes: { _id: noteId } }, },
+                    { new: true }
+                )
+            )
         },
-        removeNote: async (parent, { _id }) => {
-            return await Note.deleteById(_id);
-        }
+        addUserToCase: async (parent, { caseId, userId }) => {
+            return await (
+                Case.findOneAndUpdate(
+                    { _id: caseId },
+                    { $addToSet: { users: { _id: userId } }, },
+                    { new: true }
+                )
+            )
+        },
+        removeUserFromCase: async (parent, { caseId, userId }) => {
+            return await (
+                Case.findOneAndUpdate(
+                    { _id: caseId },
+                    { $pull: { users: { $in: [{_id: userId}] }, }, },
+                    { new: true }
+                )
+            )
+        },
+        updateNote: async (parent, args) => {
+            return await Note.findByIdAndUpdate(args._id, args, { new: true });
+        },
+        removeNote: async (parent, args) => {
+            return await Note.findOneAndDelete({ _id: args._id })
+        },
     }
 };
 

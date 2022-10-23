@@ -46,24 +46,22 @@ input CaseInput {
     bio: String
     dob: String
     createdDate: String
-    notes: [ID]
+    notes: [ID] 
     users: [ID]
 }
 
-input NoteInput {
-    _id: ID 
-    content: String
-    createdDate: String
-}
 
 type Mutation {
     addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addCase(input: CaseInput!): Case
-    updateCase(input: CaseInput!): Case
+    addCase(firstName: String!, lastName: String!, bio: String!, dob: String!, notes: [ID]!, users: [ID]!): Case
+    updateCase(_id: ID!, firstName: String!, lastName: String!, bio: String!, dob: String!, notes: [ID]!, users: [ID]!): Case
     removeCase(_id: ID!): Case
-    addNote(input: NoteInput!): Note
-    updateNote(input: NoteInput!): Note
+    addNote(content: String!): Note
+    addNoteToCase(caseId: ID!, noteId: ID!): Case
+    addUserToCase(caseId: ID!, userId: ID!): Case
+    removeUserFromCase(caseId: ID!, userId: ID!): Case
+    updateNote(_id: ID!, content: String!): Note
     removeNote(_id: ID!): Note
 }
 `;
