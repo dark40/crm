@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
@@ -12,9 +12,8 @@ import { setContext } from '@apollo/client/link/context';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  HomeOutlined,
+  ProfileOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 const { Header, Sider, Content } = Layout;
@@ -58,18 +57,13 @@ const App = () => {
           items={[
             {
               key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
+              icon: <HomeOutlined />,
+              label: 'Home',
             },
             {
               key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <ProfileOutlined />,
+              label: 'Cases',
             },
           ]}
         />
