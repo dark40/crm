@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import 'antd/dist/antd.css';
+import { setContext } from '@apollo/client/link/context';
+import { StoreProvider } from './utils/GlobalState';
+
+// import pages and components
+import Home from './pages/Home';
+import Case from './pages/Case';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import NoMatch from './pages/NoMatch';
+
+import { Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-
-// Import layout from Ant Design
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  HomeOutlined,
-  ProfileOutlined
-} from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
-const { Header, Sider, Content } = Layout;
-
-
-// Import pages and components
-
-
-
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -43,56 +37,26 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+
 const App = () => {
-  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <ApolloProvider client={client}>
-    <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <HomeOutlined />,
-              label: 'Home',
-            },
-            {
-              key: '2',
-              icon: <ProfileOutlined />,
-              label: 'Cases',
-            },
-          ]}
-        />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: 0,
-          }}
-        >
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed),
-          })}
-        </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
-          Content
-        </Content>
-      </Layout>
-    </Layout>
+
+      <StoreProvider>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/cases" element={<Case />}></Route>
+          <Route path="/cases/:id" element={<Case />}></Route>
+          <Route path="*" element={<NoMatch />}></Route>
+        </Routes>
+      </StoreProvider>
+
     </ApolloProvider>
   );
 };
+
+
 export default App;

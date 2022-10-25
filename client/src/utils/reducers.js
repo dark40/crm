@@ -1,3 +1,4 @@
+import { useReducer } from 'react';
 import {
     ADD_CASE,
     UPDATE_CASE,
@@ -10,7 +11,7 @@ import {
 } from './actions';
 
 // Create a function that will handle combining two objects. Accepts state and an action as an argument.
-export default function reducer(state, action) {
+export const reducer = (state, action) => {
     // Depending on the action we create a new version of state after the desired action is preformed
     switch (action.type) {
         case ADD_CASE: {
@@ -102,4 +103,8 @@ export default function reducer(state, action) {
         default:
             return state;
     }
+}
+
+export function useCaseReducer(initialState) {
+     return useReducer(reducer, initialState)
 }
