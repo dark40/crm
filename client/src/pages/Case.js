@@ -6,12 +6,12 @@ import CaseList from '../components/CaseList';
 
 function Case () {
 
-    const { data } = useQuery(QUERY_USER);
-    let user;
+    // const { data } = useQuery(QUERY_USER);
+    // let user;
 
-    if (data) {
-        user = data.user;
-    }
+    // if (data) {
+    //     user = data.user;
+    // }
 
 
     return (
