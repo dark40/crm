@@ -8,7 +8,7 @@ import { QUERY_CASE } from '../../utils/queries';
 import Auth from '../../utils/auth';
 import Case from '../../pages/Case';
 
-const CaseForm = () => {
+const CaseItem = () => {
     const [firstName, setFirstName] = useState('');
 
     
@@ -18,4 +18,4 @@ const CaseForm = () => {
     )
 }
 
-export default CaseForm;
+export default CaseItem;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
-import CaseList from '../components/CaseList';
 
 
-function Case () {
+
+
+function Dashboard () {
 
     // const { data } = useQuery(QUERY_USER);
     // let user;
@@ -16,9 +16,9 @@ function Case () {
 
     return (
         <>
-        testing tesging testg 
+        here is the dashabord 
         </>
     )    
 }
 
-export default Case;
+export default Dashboard;

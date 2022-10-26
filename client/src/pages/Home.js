@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { useNavigate, useParams } from 'react-router-dom';
-import AppHeader from '../components/Header';
-import CaseList from '../components/CaseList';
+import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
 
-import Case from './Case';
+// Import Pages and components
+import Dashboard from '../components/Dashboard';
+import AppHeader from '../components/Header';
+import CaseList from '../components/CaseList';
 
 // Import icons from Ant Design
 import {
@@ -22,7 +22,6 @@ const Home = () => {
 
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
-    const { currentPage } = useParams();
 
     return (
 
@@ -61,15 +60,15 @@ const Home = () => {
                         className="site-layout-background"
                         style={{
                             padding: 24,
-                            minHeight: 360,
+                            minHeight: 500,
                         }}
                     >
-
-                            <Routes>
-                            <Route path="/cases" element={<Case />}></Route>
-                            <Route path="/cases/:id" element={<Case />}></Route>
-                            </Routes>
-
+                    
+                    <Routes>
+                        <Route path="/" element={<Dashboard />}></Route>
+                        <Route path="/cases" element={<CaseList />}></Route>
+                        <Route path="/cases/:id" element={<CaseList />}></Route>
+                    </Routes>
                     </div>
                 </Content>
 
@@ -84,11 +83,7 @@ const Home = () => {
 
             </Layout>
         </Layout>
-
-
     );
-
-
 }
 
 export default Home;
