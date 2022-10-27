@@ -23,7 +23,7 @@ mutation addUser($firstName: String!, $lastName: String!, $email: String!, $pass
 `
 
 export const ADD_CASE = gql`
-mutation addCase($firstName: String!, $lastName: String!, $bio: String!, $dob: String!, $notes: [ID]!, $users: [ID]!){
+mutation addCase($firstName: String!, $lastName: String!, $bio: String, $dob: String, $notes: [ID], $users: [ID]){
     addCase(firstName: $firstName, lastName: $lastName, bio: $bio, dob: $dob, notes: $notes, users: $users) {
       _id
       firstName
@@ -62,6 +62,14 @@ mutation updateCase ($id: ID!, $firstName: String, $lastName: String, $bio: Stri
     _id
     firstName
     lastName
+  }
+}
+`
+
+export const REMOVE_CASE = gql`
+mutation removeCase ($id: ID!) {
+  removeCase(_id: $id) {
+    _id
   }
 }
 `

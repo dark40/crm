@@ -6,10 +6,8 @@ const { Provider } = StoreContext;
 
 const StoreProvider = ({ value = [], ...props }) => {
   const [state, dispatch] = useCaseReducer({
-    cases: [],
-    notes: [],
-    users: [],
     isLoggedIn: false,
+    currentTab: "",
   });
 
   return <Provider value={[state, dispatch]} {...props} />;

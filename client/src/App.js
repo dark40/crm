@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css'
 import { setContext } from '@apollo/client/link/context';
 import { StoreProvider } from './utils/GlobalState';
 import Login from './pages/Login';

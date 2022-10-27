@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 
 import { Layout, Menu } from 'antd';
+import CaseItem from '../components/CaseItem';
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -32,7 +33,7 @@ const Home = () => {
         >
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                 <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['/']} mode="inline"
+                <Menu theme="dark" defaultSelectedKeys={[]} mode="inline"
                     onClick={({ key }) => {
                         navigate(key);
                     }}
@@ -67,7 +68,7 @@ const Home = () => {
                     <Routes>
                         <Route path="/" element={<Dashboard />}></Route>
                         <Route path="/cases" element={<CaseList />}></Route>
-                        <Route path="/cases/:id" element={<CaseList />}></Route>
+                        <Route path="/cases/:id" element={<CaseItem />}></Route>
                     </Routes>
                     </div>
                 </Content>

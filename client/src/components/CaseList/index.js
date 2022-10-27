@@ -1,24 +1,30 @@
-import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select } from 'antd';
+import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
 import { EditOutlined, DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
-import { UPDATE_CASE } from '../../utils/mutations';
+import { ADD_CASE, UPDATE_CASE, REMOVE_CASE } from '../../utils/mutations';
 import moment from 'moment';
 
 function CaseList() {
   // const [state, dispatch] = useStoreContext();
 
   const { Option } = Select;
+
   const { loading: loading1, data: caseData } = useQuery(QUERY_ALL_CASES);
-  const { loading: loading2, data: userData } = useQuery(QUERY_ALL_USERS);
+  const {  data: userData } = useQuery(QUERY_ALL_USERS);
+
+  const [addCase] = useMutation(ADD_CASE);
   const [updateCase] = useMutation(UPDATE_CASE);
+  const [removeCase] = useMutation(REMOVE_CASE);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editingCase, setEditingCase] = useState(null);
   const [cases, setCases] = useState([]);
   const [users, setUsers] = useState([]);
-  // const [currentUsers, setCurrentUsers] = useState([]);
+  const [isNew, setIsNew] = useState(false);
+  const [newCase, setNewCase] = useState(null);
 
 
   useEffect(() => {
@@ -27,7 +33,7 @@ function CaseList() {
     }
 
     if (userData) {
-      setUsers(userData.users.map((user)=> {
+      setUsers(userData.users.map((user) => {
         return <Option key={user._id}>{user.firstName}</Option>
       }))
     }
@@ -43,9 +49,9 @@ function CaseList() {
       "dob": obj.dob,
       "bio": obj.bio,
       // "userObj": obj.users,
-      "users": [obj.users.map((user) => {
+      "users": obj.users.map((user) => {
         return user._id
-      })],
+      }),
       "userNames": [obj.users.map((user) => {
         return user.firstName
       })],
@@ -53,22 +59,30 @@ function CaseList() {
   }
   )
 
-  // console.log(dataSource)
-  // console.log(userData)
-
+  // console.log(dataSource);
 
   const handleDeleteCase = (record) => {
+    const getId = record.key
     Modal.confirm({
       title: "Are you sure you wanna delete this case and its notes?",
       okText: "YES",
       okType: 'danger',
       onOk: () => {
-        "delete this record."
+        // console.log(e)
+        removeCase({ variables: { id: getId } })
+        window.location.reload();
       }
     })
   }
 
+  const handleNewCase = () => {
+    setIsNew(true);
+  }
 
+  const resetNewCase = () => {
+    setIsNew(false);
+    setNewCase(null);
+  }
 
   const handleEditCase = (record) => {
     setEditingCase({ ...record });
@@ -78,6 +92,7 @@ function CaseList() {
   const resetEditing = () => {
     setIsEditing(false);
     setEditingCase(null);
+
   }
 
   function calculate_age(dob) {
@@ -86,7 +101,19 @@ function CaseList() {
     return Math.abs(age_dt.getUTCFullYear() - 1970);
   }
 
+  async function handleAddCase() {
+    await addCase({ variables: { ...newCase } });
+    console.log(newCase)
+    resetNewCase();
+    window.location.reload();
+  }
 
+  async function handleEditCaseGQL() {
+    // console.log(editingCase)
+    await updateCase({ variables: { id: editingCase.key, ...editingCase } });
+    resetEditing();
+    window.location.reload();
+  }
 
   const columns = [
     {
@@ -113,7 +140,15 @@ function CaseList() {
       title: 'Assigned to',
       key: 'userNames',
       dataIndex: 'userNames',
-      // render: (record) => <p>{record.users.map((obj)=> {return obj.name})}</p>,
+      render: (tags) => (
+        <>
+          {tags.map((tag) => (
+              <Tag color="blue" key={tag}>
+                {tag}
+              </Tag>
+          ))}
+        </>
+      )
     },
     {
       title: 'Action',
@@ -138,7 +173,7 @@ function CaseList() {
           }}
         >
           <Breadcrumb.Item>
-            <Button>Add new Case</Button>
+            <Button onClick={handleNewCase}>Add new Case</Button>
           </Breadcrumb.Item>
 
         </Breadcrumb>
@@ -151,10 +186,7 @@ function CaseList() {
           okText='Save'
           onCancel={() => { resetEditing() }}
           onOk={() => {
-            // console.log(editingCase)
-            updateCase({ variables: { id: editingCase.key, ...editingCase } });
-            resetEditing();
-            window.location.reload();
+            handleEditCaseGQL();
           }}
         >
           <Input value={editingCase?.firstName} onChange={(e) => {
@@ -172,7 +204,7 @@ function CaseList() {
             format="DD-MM-YYYY"
             onChange={(date) => {
               setEditingCase(pre => {
-                console.log(moment(date))
+                // console.log(moment(date))
                 return { ...pre, dob: moment(date).valueOf() }
               })
             }} />
@@ -188,14 +220,14 @@ function CaseList() {
               width: '100%',
             }}
             placeholder="Please select users"
-            // defaultValue={editingCase?.users}
-            // value={editingCase?.users} 
+            defaultValue={editingCase?.userNames[0]}
+            value={editingCase?.users}
             onChange={(selected) => {
               // setCurrentUsers(selected.fieldNames)
               setEditingCase(pre => {
-                return {...pre, users: selected}
+                return { ...pre, users: selected }
               })
-              // console.log(selected)
+              // console.log(editingCase?.userNames)
             }}
           >
             {users}
@@ -203,6 +235,100 @@ function CaseList() {
 
         </Modal>
 
+        <Modal
+          title="New Case"
+          open={isNew}
+          okText='Save'
+          onCancel={() => { resetNewCase() }}
+          onOk={() => {
+            handleAddCase()
+          }}
+        >
+
+          <Form
+            name="New Case"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            initialValues={{ remember: true }}
+            // onFinish={"All Good"}
+            //   onFinishFailed={"Please fill in all details"}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="First Name"
+              name="firstName"
+              rules={[{ required: true, message: 'Please input your name!' }]}
+            >
+              <Input onChange={(e) => {
+                setNewCase(pre => {
+                  return { ...pre, firstName: e.target.value }
+                })
+              }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Last Name"
+              name="lastName"
+              rules={[{ required: true, message: 'Please input your name!' }]}
+            >
+              <Input onChange={(e) => {
+                setNewCase(pre => {
+                  return { ...pre, lastName: e.target.value }
+                })
+              }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Date of Birth"
+              name="dob"
+              rules={[{ required: true, message: 'Please input your date of birth!' }]}
+            >
+              <DatePicker
+                value={[]}
+                format="DD-MM-YYYY"
+                onChange={(date) => {
+                  setNewCase(pre => {
+                    return { ...pre, dob: `${moment(date).valueOf()}` }
+                  })
+                }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Bio"
+              name="bio"
+            >
+              <Input onChange={(e) => {
+                setNewCase(pre => {
+                  return { ...pre, bio: e.target.value }
+                })
+              }} />
+            </Form.Item>
+
+
+            <Form.Item
+              label="Assigned to"
+              name="users"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: '100%',
+                }}
+                placeholder="Please select users"
+                onChange={(selected) => {
+                  setNewCase(pre => {
+                    return { ...pre, users: selected }
+                  })
+                }}
+              >
+                {users}
+              </Select>
+            </Form.Item>
+
+          </Form>
+
+        </Modal>
 
       </div>
 

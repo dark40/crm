@@ -54,7 +54,7 @@ input CaseInput {
 type Mutation {
     addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addCase(firstName: String!, lastName: String!, bio: String!, dob: String!, notes: [ID], users: [ID]): Case
+    addCase(firstName: String!, lastName: String!, bio: String, dob: String, notes: [ID], users: [ID]): Case
     updateCase(_id: ID!, firstName: String, lastName: String, bio: String, dob: String, notes: [ID], users: [ID]): Case
     removeCase(_id: ID!): Case
     addNote(content: String!): Note

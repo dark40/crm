@@ -4,11 +4,8 @@ import { useQuery } from '@apollo/client';
 
 
 
-function Dashboard () {
-      // const [state, dispatch] = useStoreContext();
+function CaseItem () {
 
-
-      
     // const { data } = useQuery(QUERY_USER);
     // let user;
 
@@ -19,9 +16,9 @@ function Dashboard () {
 
     return (
         <>
-        <h1>Welcome</h1>
+        here is the Case item page
         </>
     )    
 }
 
-export default Dashboard;
+export default CaseItem;
