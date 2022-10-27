@@ -24,23 +24,27 @@ export const reducer = (state, action) => {
         }
 
         case UPDATE_CASE: {
-            const caseIndex = state.cases.findIndex(
-                (currentCase) => currentCase.id === action.payload.id
-            );
+            // const caseIndex = state.cases.findIndex(
+            //     (currentCase) => currentCase.id === action.payload.id
+            // );
 
-            const updateCase = {
-                ...state.cases[caseIndex],
-                ...action.payload,
-            };
+            // const updateCase = {
+            //     ...state.cases[caseIndex],
+            //     ...action.payload,
+            // };
 
-            const newCaseList = [...state.cases];
+            // const newCaseList = [...state.cases];
 
-            newCaseList[caseIndex] = updateCase;
+            // newCaseList[caseIndex] = updateCase;
 
+            // return {
+            //     ...state,
+            //     cases: newCaseList,
+            // };
             return {
-                ...state,
-                cases: newCaseList,
-            };
+                ...state, 
+                cases: [...action.cases]
+            }
         }
 
         case REMOVE_CASE: {

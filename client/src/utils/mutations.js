@@ -55,3 +55,13 @@ mutation addNote($content: String!) {
     }
   }
 `
+
+export const UPDATE_CASE = gql`
+mutation updateCase ($id: ID!, $firstName: String, $lastName: String, $bio: String, $dob: String, $notes: [ID], $users: [ID]) {
+  updateCase(_id: $id, firstName: $firstName, lastName: $lastName, bio: $bio, dob: $dob, notes: $notes, users: $users) {
+    _id
+    firstName
+    lastName
+  }
+}
+`

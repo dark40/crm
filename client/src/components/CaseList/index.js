@@ -1,42 +1,61 @@
-import { Space, Table, Tag, Button, Breadcrumb, Modal } from 'antd';
+import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useStoreContext } from '../../utils/GlobalState';
-import { useQuery } from '@apollo/client';
-import { QUERY_ALL_CASES } from '../../utils/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
 import { EditOutlined, DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
-import { makeProcessedFieldsMerger } from '@apollo/client/cache/inmemory/helpers';
-
-
+import { UPDATE_CASE } from '../../utils/mutations';
+import moment from 'moment';
 
 function CaseList() {
   // const [state, dispatch] = useStoreContext();
 
-  const { loading, data } = useQuery(QUERY_ALL_CASES);
-
+  const { Option } = Select;
+  const { loading: loading1, data: caseData } = useQuery(QUERY_ALL_CASES);
+  const { loading: loading2, data: userData } = useQuery(QUERY_ALL_USERS);
+  const [updateCase] = useMutation(UPDATE_CASE);
   const [isEditing, setIsEditing] = useState(false);
+  const [editingCase, setEditingCase] = useState(null);
+  const [cases, setCases] = useState([]);
+  const [users, setUsers] = useState([]);
+  // const [currentUsers, setCurrentUsers] = useState([]);
 
-  const [cases, setCases] = useState([])
 
   useEffect(() => {
-    if (data) {
-      setCases(data.cases)
+    if (caseData) {
+      setCases(caseData.cases);
     }
-  }, [data])
+
+    if (userData) {
+      setUsers(userData.users.map((user)=> {
+        return <Option key={user._id}>{user.firstName}</Option>
+      }))
+    }
+
+  }, [caseData, userData])
+
 
   const dataSource = cases.map((obj) => {
     return {
       "key": obj._id,
-      "name": obj.firstName + " " + obj.lastName,
+      "firstName": obj.firstName,
+      "lastName": obj.lastName,
       "dob": obj.dob,
       "bio": obj.bio,
-      "users": [obj.users.map((name) => {
-        return name.firstName;
-      })]
+      // "userObj": obj.users,
+      "users": [obj.users.map((user) => {
+        return user._id
+      })],
+      "userNames": [obj.users.map((user) => {
+        return user.firstName
+      })],
     }
   }
   )
 
-  console.log(dataSource)
+  // console.log(dataSource)
+  // console.log(userData)
+
 
   const handleDeleteCase = (record) => {
     Modal.confirm({
@@ -49,8 +68,22 @@ function CaseList() {
     })
   }
 
+
+
   const handleEditCase = (record) => {
+    setEditingCase({ ...record });
     setIsEditing(true);
+  }
+
+  const resetEditing = () => {
+    setIsEditing(false);
+    setEditingCase(null);
+  }
+
+  function calculate_age(dob) {
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms);
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
   }
 
 
@@ -61,14 +94,14 @@ function CaseList() {
       dataIndex: 'name',
       key: 'name',
       render: (_, record) => (
-        <a href={"cases/" + record.key}>{record.name}</a>
-      ),
+        <a href={"cases/" + record.key}>{record.firstName + " " + record.lastName}</a>
+      )
     },
     {
-      title: 'DOB',
+      title: 'Age',
       dataIndex: 'dob',
       key: 'dob',
-      render: (date) => <p>{Date(date)}</p>,
+      render: (_, record) => <p>{calculate_age(new Date(parseInt(record.dob)))}</p>,
       sorter: (a, b) => a.dob - b.dob
     },
     {
@@ -77,17 +110,18 @@ function CaseList() {
       key: 'bio',
     },
     {
-      title: 'Users',
-      key: 'users',
-      dataIndex: 'users',
+      title: 'Assigned to',
+      key: 'userNames',
+      dataIndex: 'userNames',
+      // render: (record) => <p>{record.users.map((obj)=> {return obj.name})}</p>,
     },
     {
       title: 'Action',
       key: 'action',
       render: (record) => (
         <Space>
-          <EditOutlined onClick={() => {handleEditCase(record)}} />
-          <DeleteOutlined onClick={() => {handleDeleteCase(record)}} style={{ color: 'red', marginLeft: 12 }} />
+          <EditOutlined onClick={() => { handleEditCase(record) }} />
+          <DeleteOutlined onClick={() => { handleDeleteCase(record) }} style={{ color: 'red', marginLeft: 12 }} />
         </Space>
       ),
     },
@@ -95,7 +129,7 @@ function CaseList() {
 
 
   return (
-    loading ?
+    loading1 ?
       <LoadingOutlined style={{ textAlign: 'center', height: 40 }} />
       : <div>
         <Breadcrumb
@@ -103,19 +137,69 @@ function CaseList() {
             margin: '16px 0',
           }}
         >
-          <Button>Add new Case</Button>
+          <Breadcrumb.Item>
+            <Button>Add new Case</Button>
+          </Breadcrumb.Item>
+
         </Breadcrumb>
 
         <Table columns={columns} dataSource={dataSource} />
-        
+
         <Modal
-        title= "Edit Case Detail"
-        visible={isEditing}
-        onCancel={()=> {setIsEditing(false)}}
-        onOk={()=> {
-          setIsEditing(false)
-        }}
+          title="Edit Case"
+          open={isEditing}
+          okText='Save'
+          onCancel={() => { resetEditing() }}
+          onOk={() => {
+            // console.log(editingCase)
+            updateCase({ variables: { id: editingCase.key, ...editingCase } });
+            resetEditing();
+            window.location.reload();
+          }}
         >
+          <Input value={editingCase?.firstName} onChange={(e) => {
+            setEditingCase(pre => {
+              return { ...pre, firstName: e.target.value }
+            })
+          }} />
+          <Input value={editingCase?.lastName} onChange={(e) => {
+            setEditingCase(pre => {
+              return { ...pre, lastName: e.target.value }
+            })
+          }} />
+          <DatePicker
+            value={moment(parseInt(editingCase?.dob))}
+            format="DD-MM-YYYY"
+            onChange={(date) => {
+              setEditingCase(pre => {
+                console.log(moment(date))
+                return { ...pre, dob: moment(date).valueOf() }
+              })
+            }} />
+          <Input value={editingCase?.bio} onChange={(e) => {
+            setEditingCase(pre => {
+              return { ...pre, bio: e.target.value }
+            })
+          }} />
+          <Select
+            mode="multiple"
+            allowClear
+            style={{
+              width: '100%',
+            }}
+            placeholder="Please select users"
+            // defaultValue={editingCase?.users}
+            // value={editingCase?.users} 
+            onChange={(selected) => {
+              // setCurrentUsers(selected.fieldNames)
+              setEditingCase(pre => {
+                return {...pre, users: selected}
+              })
+              // console.log(selected)
+            }}
+          >
+            {users}
+          </Select>
 
         </Modal>
 
