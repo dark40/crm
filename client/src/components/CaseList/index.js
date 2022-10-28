@@ -1,9 +1,9 @@
-import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select, Form } from 'antd';
+import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select, Form, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
-import { EditOutlined, DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ADD_CASE, UPDATE_CASE, REMOVE_CASE } from '../../utils/mutations';
 import moment from 'moment';
 
@@ -13,7 +13,7 @@ function CaseList() {
   const { Option } = Select;
 
   const { loading: loading1, data: caseData } = useQuery(QUERY_ALL_CASES);
-  const {  data: userData } = useQuery(QUERY_ALL_USERS);
+  const { data: userData } = useQuery(QUERY_ALL_USERS);
 
   const [addCase] = useMutation(ADD_CASE);
   const [updateCase] = useMutation(UPDATE_CASE);
@@ -52,9 +52,9 @@ function CaseList() {
       "users": obj.users.map((user) => {
         return user._id
       }),
-      "userNames": [obj.users.map((user) => {
+      "userNames": obj.users.map((user) => {
         return user.firstName
-      })],
+      }),
     }
   }
   )
@@ -143,9 +143,9 @@ function CaseList() {
       render: (tags) => (
         <>
           {tags.map((tag) => (
-              <Tag color="blue" key={tag}>
-                {tag}
-              </Tag>
+            <Tag color="blue" key={tag}>
+              {tag}
+            </Tag>
           ))}
         </>
       )
@@ -165,7 +165,7 @@ function CaseList() {
 
   return (
     loading1 ?
-      <LoadingOutlined style={{ textAlign: 'center', height: 40 }} />
+      <Spin size="large" />
       : <div>
         <Breadcrumb
           style={{
