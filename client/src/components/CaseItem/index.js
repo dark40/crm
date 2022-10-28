@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Card, Spin, List, Input, Button } from 'antd';
 import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
-import { ADD_NOTE, UPDATE_CASE, ADD_NOTE_TO_CASE} from '../../utils/mutations';
+import { ADD_NOTE,  ADD_NOTE_TO_CASE} from '../../utils/mutations';
 import { QUERY_CASE } from '../../utils/queries';
 import moment from 'moment';
 
@@ -16,8 +15,6 @@ function CaseItem() {
     const { id: idParam } = useParams();
 
     const [currentCase, setCurrentCase] = useState([]);
-    const [getNoteId, setGetNoteId] = useState('');
-    // const [noteIdList, setNoteIdList] = useState([]);
 
     const { loading, data } = useQuery(QUERY_CASE, {
         variables: { id: idParam },
@@ -28,17 +25,7 @@ function CaseItem() {
     
     const [addNoteToCase] = useMutation(ADD_NOTE_TO_CASE);
 
-    async function handleAddNote() {
-
-        await addNote({variables: { content: newNote}})
-        .then((res) => {
-            addNoteToCase({variables: {caseId: currentCase._id, noteId: res.data.addNote._id}})
-        })
-
-        window.location.reload();
-    }
-
-   
+    
 
     useEffect(() => {
         if (data) {
@@ -50,6 +37,17 @@ function CaseItem() {
     if (loading) {
         return <Spin size="large" />
     }
+
+    async function handleAddNote() {
+
+        await addNote({variables: { content: newNote}})
+        .then((res) => {
+            addNoteToCase({variables: {caseId: currentCase._id, noteId: res.data.addNote._id}})
+        })
+
+        window.location.reload();
+    }
+
 
     return (
         <>
@@ -87,7 +85,7 @@ function CaseItem() {
                 size="large"
                 pagination={{
                     onChange: (page) => {
-                        console.log(page);
+                        // console.log(page);
                     },
                     pageSize: 3,
                 }}
@@ -116,7 +114,7 @@ function CaseItem() {
                         <List.Item.Meta
                             // avatar={<Avatar src={item.avatar} />}
                             // title={<a href={item.href}>{item.}</a>}
-                            description={moment(new Date(parseInt(item.createdDate))).endOf('day').fromNow()}
+                            description={moment(new Date(parseInt(item.createdDate))).format("Do MMM YY, h:mm a")}
                         />
                         {item.content}
                     </List.Item>

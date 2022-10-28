@@ -103,7 +103,7 @@ function CaseList() {
 
   async function handleAddCase() {
     await addCase({ variables: { ...newCase } });
-    console.log(newCase)
+    // console.log(newCase)
     resetNewCase();
     window.location.reload();
   }

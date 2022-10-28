@@ -32,7 +32,7 @@ const Home = () => {
             }}
         >
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                <div className="logo" />
+                <div className="logo"><h1>LOGO</h1></div>
                 <Menu theme="dark" defaultSelectedKeys={[]} mode="inline"
                     onClick={({ key }) => {
                         navigate(key);

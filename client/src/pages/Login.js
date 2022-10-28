@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, Checkbox, Form, Input, Layout } from 'antd';
 import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { LOGIN } from '../utils/mutations';
@@ -29,11 +30,19 @@ function Login(props) {
     });
   };
 
-  return (
-    <div className="container my-1">
-      <Link to="/signup">← Go to Signup</Link>
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
-      <h2>Login</h2>
+  return (
+    <>
+    {/* <div className="container my-1">
+      <Link to="/signup">← Go to Signup</Link> */}
+
+      {/* <h2>Login</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="flex-row space-between my-2">
           <label htmlFor="email">Email address:</label>
@@ -64,7 +73,75 @@ function Login(props) {
           <button type="submit">Submit</button>
         </div>
       </form>
-    </div>
+    </div> */}
+
+      <Layout className="layout" type="flex">
+
+    <Form
+      name="basic"
+      labelCol={{
+        span: 8,
+      }}
+      wrapperCol={{
+        span: 8,
+      }}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="on"
+    >
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!',
+          },
+        ]}
+      >
+        <Input 
+        placeholder="youremail@test.com"
+        name="email"
+        type="email"
+        id="email"
+        onChange={handleChange}/>
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]}
+      >
+        <Input.Password 
+        placeholder="******"
+        name="password"
+        type="password"
+        id="pwd"
+        onChange={handleChange}/>
+      </Form.Item>
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button type="primary" htmlType="submit" onClick={handleFormSubmit}>
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
+
+    </Layout>
+    </>
   );
 }
 
