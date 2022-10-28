@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { Navigate, useParams } from 'react-router-dom';
-import { Card, Spin, Avatar, List } from 'antd';
+import { Card, Spin, List, Input, Button } from 'antd';
 import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
+import { ADD_NOTE, UPDATE_CASE, ADD_NOTE_TO_CASE} from '../../utils/mutations';
 import { QUERY_CASE } from '../../utils/queries';
 import moment from 'moment';
+
+const { TextArea } = Input;
 
 
 function CaseItem() {
@@ -12,10 +16,29 @@ function CaseItem() {
     const { id: idParam } = useParams();
 
     const [currentCase, setCurrentCase] = useState([]);
+    const [getNoteId, setGetNoteId] = useState('');
+    // const [noteIdList, setNoteIdList] = useState([]);
 
     const { loading, data } = useQuery(QUERY_CASE, {
         variables: { id: idParam },
     });
+
+    const [newNote, setNewNote] = useState("");
+    const [addNote] = useMutation(ADD_NOTE)
+    
+    const [addNoteToCase] = useMutation(ADD_NOTE_TO_CASE);
+
+    async function handleAddNote() {
+
+        await addNote({variables: { content: newNote}})
+        .then((res) => {
+            addNoteToCase({variables: {caseId: currentCase._id, noteId: res.data.addNote._id}})
+        })
+
+        window.location.reload();
+    }
+
+   
 
     useEffect(() => {
         if (data) {
@@ -42,6 +65,23 @@ function CaseItem() {
                 <p>Created at: {moment(new Date(parseInt(currentCase.createdDate))).endOf('day').fromNow()}</p>
             </Card>
 
+            <TextArea value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
+                placeholder="Add new Note here"
+                autoSize={{
+                    minRows: 3,
+                    maxRows: 5,
+                }}>
+            
+            </TextArea>
+
+            <Button
+                type="primary"
+                onClick={() => {handleAddNote()}}>
+                    Submit 
+                </Button>
+
+
             <List
                 itemLayout="vertical"
                 size="large"
@@ -60,18 +100,18 @@ function CaseItem() {
                 renderItem={(item) => (
                     <List.Item
                         key={item._id}
-                        // actions={[
-                        //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                        //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                        //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                        // ]}
-                        // extra={
-                        //     // <img
-                        //     //     width={272}
-                        //     //     alt="logo"
-                        //     //     src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                        //     // />
-                        // }
+                    // actions={[
+                    //   <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+                    //   <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                    //   <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                    // ]}
+                    // extra={
+                    //     // <img
+                    //     //     width={272}
+                    //     //     alt="logo"
+                    //     //     src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                    //     // />
+                    // }
                     >
                         <List.Item.Meta
                             // avatar={<Avatar src={item.avatar} />}

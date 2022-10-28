@@ -73,3 +73,11 @@ mutation removeCase ($id: ID!) {
   }
 }
 `
+
+export const ADD_NOTE_TO_CASE = gql`
+mutation addNoteToCase ($caseId: ID!, $noteId: ID!) {
+  addNoteToCase(caseId: $caseId, noteId: $noteId) {
+    _id
+  }
+}
+`
