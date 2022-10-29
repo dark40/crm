@@ -1,6 +1,5 @@
 import { Space, Table, Tag, Button, Breadcrumb, Modal, Input, DatePicker, Select, Form, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -8,7 +7,6 @@ import { ADD_CASE, UPDATE_CASE, REMOVE_CASE } from '../../utils/mutations';
 import moment from 'moment';
 
 function CaseList() {
-  // const [state, dispatch] = useStoreContext();
 
   const { Option } = Select;
 

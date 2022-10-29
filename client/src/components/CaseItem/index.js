@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Spin, List, Input, Button } from 'antd';
-import { useStoreContext } from '../../utils/GlobalState';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_NOTE,  ADD_NOTE_TO_CASE} from '../../utils/mutations';
 import { QUERY_CASE } from '../../utils/queries';
@@ -11,7 +10,7 @@ const { TextArea } = Input;
 
 
 function CaseItem() {
-    // const [state, dispatch] = useStoreContext();
+
     const { id: idParam } = useParams();
 
     const [currentCase, setCurrentCase] = useState([]);

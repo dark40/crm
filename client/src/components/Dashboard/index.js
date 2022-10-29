@@ -1,21 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import { Button, Col, Row, Statistic } from 'antd';
 
 
 
 function Dashboard() {
-    // const [state, dispatch] = useStoreContext();
-
-
-
-    // const { data } = useQuery(QUERY_USER);
-    // let user;
-
-    // if (data) {
-    //     user = data.user;
-    // }
-
 
     return (
         <>
