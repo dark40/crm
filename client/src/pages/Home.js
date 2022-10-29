@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
-
+import Auth from "../utils/auth";
 
 // Import Pages and components
 import Dashboard from '../components/Dashboard';
@@ -24,8 +24,15 @@ const Home = () => {
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
 
-    return (
+    useEffect(() => {
+        if (!Auth.loggedIn()) {
+            navigate("/login")
+        }
+    }
+    )
 
+
+    return (
         <Layout
             style={{
                 minHeight: '100vh',
@@ -64,12 +71,12 @@ const Home = () => {
                             minHeight: 500,
                         }}
                     >
-                    
-                    <Routes>
-                        <Route path="/" element={<Dashboard />}></Route>
-                        <Route path="/cases" element={<CaseList />}></Route>
-                        <Route path="/cases/:id" element={<CaseItem />}></Route>
-                    </Routes>
+
+                        <Routes>
+                            <Route path="/" element={<Dashboard />}></Route>
+                            <Route path="/cases" element={<CaseList />}></Route>
+                            <Route path="/cases/:id" element={<CaseItem />}></Route>
+                        </Routes>
                     </div>
                 </Content>
 
