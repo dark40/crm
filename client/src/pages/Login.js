@@ -77,7 +77,7 @@ function Login(props) {
       </form>
     </div> */}
 
-      <Layout className="layout" type="flex">
+      <Layout className="layout " type="flex" >
 
         <Form
           name="basic"

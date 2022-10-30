@@ -187,50 +187,86 @@ function CaseList() {
             handleEditCaseGQL();
           }}
         >
-          <Input value={editingCase?.firstName} onChange={(e) => {
-            setEditingCase(pre => {
-              return { ...pre, firstName: e.target.value }
-            })
-          }} />
-          <Input value={editingCase?.lastName} onChange={(e) => {
-            setEditingCase(pre => {
-              return { ...pre, lastName: e.target.value }
-            })
-          }} />
-          <DatePicker
-            value={moment(parseInt(editingCase?.dob))}
-            format="DD-MM-YYYY"
-            onChange={(date) => {
+          <Form
+            name="Edit Case"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+          // initialValues={{ editingCase }}
+          // onFinish={"All Good"}
+          //   onFinishFailed={"Please fill in all details"}
+          // autoComplete="off"
+          >
+
+            <Form.Item
+              label="First Name"
+              // rules={[{ required: true, message: 'Please input your name!' }]}
+            >
+
+              <Input value={editingCase?.firstName} onChange={(e) => {
+                setEditingCase(pre => {
+                  return { ...pre, firstName: e.target.value }
+                })
+              }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Last Name"
+            >
+              <Input value={editingCase?.lastName} onChange={(e) => {
+                setEditingCase(pre => {
+                  return { ...pre, lastName: e.target.value }
+                })
+              }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Date of Birth"
+            >
+            <DatePicker
+              value={moment(parseInt(editingCase?.dob))}
+              format="DD-MM-YYYY"
+              onChange={(date) => {
+                setEditingCase(pre => {
+                  // console.log(moment(date))
+                  return { ...pre, dob: moment(date).valueOf() }
+                })
+              }} />
+            </Form.Item>
+              
+            <Form.Item
+              label="Bio"
+            >
+            <Input value={editingCase?.bio} onChange={(e) => {
               setEditingCase(pre => {
-                // console.log(moment(date))
-                return { ...pre, dob: moment(date).valueOf() }
+                return { ...pre, bio: e.target.value }
               })
             }} />
-          <Input value={editingCase?.bio} onChange={(e) => {
-            setEditingCase(pre => {
-              return { ...pre, bio: e.target.value }
-            })
-          }} />
-          <Select
-            mode="multiple"
-            allowClear
-            style={{
-              width: '100%',
-            }}
-            placeholder="Please select users"
-            defaultValue={editingCase?.userNames[0]}
-            value={editingCase?.users}
-            onChange={(selected) => {
-              // setCurrentUsers(selected.fieldNames)
-              setEditingCase(pre => {
-                return { ...pre, users: selected }
-              })
-              // console.log(editingCase?.userNames)
-            }}
-          >
-            {users}
-          </Select>
+            </Form.Item>
 
+            <Form.Item
+              label="Assigned to"
+            >
+            <Select
+              mode="multiple"
+              allowClear
+              style={{
+                width: '100%',
+              }}
+              placeholder="Please select users"
+              defaultValue={editingCase?.userNames[0]}
+              value={editingCase?.users}
+              onChange={(selected) => {
+                // setCurrentUsers(selected.fieldNames)
+                setEditingCase(pre => {
+                  return { ...pre, users: selected }
+                })
+                // console.log(editingCase?.userNames)
+              }}
+            >
+              {users}
+            </Select>
+            </Form.Item>
+          </Form>
         </Modal>
 
         <Modal
