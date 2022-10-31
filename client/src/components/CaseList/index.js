@@ -4,11 +4,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ADD_CASE, UPDATE_CASE, REMOVE_CASE } from '../../utils/mutations';
-import { Routes, Route } from 'react-router-dom';
 import moment from 'moment';
-import Dashboard from '../Dashboard';
-import CaseItem from '../CaseItem';
-import Home from '../../pages/Home';
+
 
 function CaseList() {
 
@@ -367,15 +364,6 @@ function CaseList() {
           </Form>
 
         </Modal>
-
-        <Routes>
-          <Route element={<Home />}>
-            <Route path="/cases/:id" element={<CaseItem />}></Route>
-          </Route>
-        </Routes>
-
-
-
 
       </div>
 
