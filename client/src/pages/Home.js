@@ -72,11 +72,11 @@ const Home = () => {
                         }}
                     >
 
-                        {/* <Routes>
+                        <Routes>
                             <Route path="/" element={<Dashboard />}></Route>
                             <Route path="/cases" element={<CaseList />}></Route>
                             <Route path="/cases/:id" element={<CaseItem />}></Route>
-                        </Routes> */}
+                        </Routes>
                     </div>
                 </Content>
 
