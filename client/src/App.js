@@ -46,10 +46,10 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
-          <Route element={<Home />}>
-            <Route path="/*" element={<Dashboard />}></Route>
+          <Route path="/*" element={<Home />}>
+            {/* <Route path="/" element={<Dashboard />}></Route>
             <Route path="/cases" element={<CaseList />}></Route>
-            <Route path="/cases/:id" element={<CaseItem />}></Route>
+            <Route path="/cases/:id" element={<CaseItem />}></Route> */}
           </Route>
           <Route path="*" element={<NoMatch />}></Route>
         </Routes>
