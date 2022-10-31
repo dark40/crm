@@ -77,6 +77,7 @@ const Home = () => {
                             <Route path="/cases" element={<CaseList />}></Route>
                             <Route path="/cases/:id" element={<CaseItem />}></Route>
                         </Routes>
+
                     </div>
                 </Content>
 
