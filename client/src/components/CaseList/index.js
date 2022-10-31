@@ -4,7 +4,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ALL_CASES, QUERY_ALL_USERS } from '../../utils/queries';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ADD_CASE, UPDATE_CASE, REMOVE_CASE } from '../../utils/mutations';
+import { Routes, Route } from 'react-router-dom';
 import moment from 'moment';
+import Dashboard from '../Dashboard';
+import CaseItem from '../CaseItem';
+import Home from '../../pages/Home';
 
 function CaseList() {
 
@@ -199,7 +203,7 @@ function CaseList() {
 
             <Form.Item
               label="First Name"
-              // rules={[{ required: true, message: 'Please input your name!' }]}
+            // rules={[{ required: true, message: 'Please input your name!' }]}
             >
 
               <Input value={editingCase?.firstName} onChange={(e) => {
@@ -222,49 +226,49 @@ function CaseList() {
             <Form.Item
               label="Date of Birth"
             >
-            <DatePicker
-              value={moment(parseInt(editingCase?.dob))}
-              format="DD-MM-YYYY"
-              onChange={(date) => {
-                setEditingCase(pre => {
-                  // console.log(moment(date))
-                  return { ...pre, dob: moment(date).valueOf() }
-                })
-              }} />
+              <DatePicker
+                value={moment(parseInt(editingCase?.dob))}
+                format="DD-MM-YYYY"
+                onChange={(date) => {
+                  setEditingCase(pre => {
+                    // console.log(moment(date))
+                    return { ...pre, dob: moment(date).valueOf() }
+                  })
+                }} />
             </Form.Item>
-              
+
             <Form.Item
               label="Bio"
             >
-            <Input value={editingCase?.bio} onChange={(e) => {
-              setEditingCase(pre => {
-                return { ...pre, bio: e.target.value }
-              })
-            }} />
+              <Input value={editingCase?.bio} onChange={(e) => {
+                setEditingCase(pre => {
+                  return { ...pre, bio: e.target.value }
+                })
+              }} />
             </Form.Item>
 
             <Form.Item
               label="Assigned to"
             >
-            <Select
-              mode="multiple"
-              allowClear
-              style={{
-                width: '100%',
-              }}
-              placeholder="Please select users"
-              defaultValue={editingCase?.userNames[0]}
-              value={editingCase?.users}
-              onChange={(selected) => {
-                // setCurrentUsers(selected.fieldNames)
-                setEditingCase(pre => {
-                  return { ...pre, users: selected }
-                })
-                // console.log(editingCase?.userNames)
-              }}
-            >
-              {users}
-            </Select>
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: '100%',
+                }}
+                placeholder="Please select users"
+                defaultValue={editingCase?.userNames[0]}
+                value={editingCase?.users}
+                onChange={(selected) => {
+                  // setCurrentUsers(selected.fieldNames)
+                  setEditingCase(pre => {
+                    return { ...pre, users: selected }
+                  })
+                  // console.log(editingCase?.userNames)
+                }}
+              >
+                {users}
+              </Select>
             </Form.Item>
           </Form>
         </Modal>
@@ -363,6 +367,15 @@ function CaseList() {
           </Form>
 
         </Modal>
+
+        <Routes>
+          <Route element={<Home />}>
+            <Route path="/cases/:id" element={<CaseItem />}></Route>
+          </Route>
+        </Routes>
+
+
+
 
       </div>
 
