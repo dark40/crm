@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NoMatch from './pages/NoMatch';
 import CaseItem from './components/CaseItem';
+import Dashboard from './components/Dashboard';
 import CaseList from './components/CaseList';
 import Home from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
@@ -45,7 +46,8 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/" element={<Home />}>
+          <Route element={<Home />}>
+          <Route path="/" element={<Dashboard />}></Route>
             <Route path="/cases" element={<CaseList />}></Route>
             <Route path="/cases/:id" element={<CaseItem />}></Route>
           </Route>
