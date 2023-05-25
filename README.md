@@ -9,8 +9,8 @@ When I manage cases, I would like to see case’s info and notes.
 
 
 ## Deployment (under maintenance)
-[Open the App here](https://guarded-oasis-34202.herokuapp.com/)
-
+[Open the App here](https://guarded-oasis-34202.herokuapp.com/) (Heroku no longer available)
+An alternative platform will take place.
 
 ## Technologies Used
 React, Ant Design
