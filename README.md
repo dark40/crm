@@ -8,9 +8,8 @@ A simple case management built with flexibility to to extend scope. Publicly kno
 When I manage cases, I would like to see case’s info and notes. 
 
 
-## Deployment (under maintenance)
-[Open the App here](https://guarded-oasis-34202.herokuapp.com/) (Heroku no longer available)
-An alternative platform will take place.
+## Deployment 
+[Open the App here](https://dark40.github.io/crm/)
 
 ## Technologies Used
 React, Ant Design
