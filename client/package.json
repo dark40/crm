@@ -2,7 +2,6 @@
   "name": "crm-client",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://dark40.github.io/crm",
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "@apollo/client": "^3.5.8",
@@ -26,9 +25,7 @@
     "build": "react-scripts build && echo '/* /index.html  200' | cat >build/_redirects ",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "ng build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "heroku-postbuild": "ng build"
   },
   "eslintConfig": {
     "extends": [
