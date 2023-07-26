@@ -21,7 +21,6 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "gh-pages": "^5.0.0",
-    "gh-pages:404": "cp build/index.html build/404.html"
+    "gh-pages": "^5.0.0"
   }
 }

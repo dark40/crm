@@ -23,7 +23,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: build app
-        run: npm run build && npm run gh-pages:404
+        run: npm run build
         env:
           PUBLIC_URL: /crm
       - name: upload artifact
