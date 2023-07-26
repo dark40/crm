@@ -2,6 +2,7 @@
   "name": "crm",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://dark40.github.io/crm",
   "main": "server/server.js",
   "scripts": {
     "start": "node server --ignore client",
@@ -9,12 +10,17 @@
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
-    "server": "cd server && npm run start"
+    "server": "cd server && npm run start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.1.0"
+  },
+  "dependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
