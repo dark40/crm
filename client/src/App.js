@@ -5,9 +5,9 @@ import { StoreProvider } from './utils/GlobalState';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NoMatch from './pages/NoMatch';
-import CaseItem from './components/CaseItem';
-import Dashboard from './components/Dashboard';
-import CaseList from './components/CaseList';
+// import CaseItem from './components/CaseItem';
+// import Dashboard from './components/Dashboard';
+// import CaseList from './components/CaseList';
 import Home from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
 
