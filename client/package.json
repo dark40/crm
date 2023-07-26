@@ -2,6 +2,7 @@
   "name": "crm-client",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://dark40.github.io/crm",
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "@apollo/client": "^3.5.8",
