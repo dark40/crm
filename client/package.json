@@ -26,7 +26,9 @@
     "build": "react-scripts build && echo '/* /index.html  200' | cat >build/_redirects ",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "ng build"
+    "heroku-postbuild": "ng build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
