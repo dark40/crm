@@ -8,8 +8,8 @@ A simple case management built with flexibility to to extend scope. Publicly kno
 When I manage cases, I would like to see case’s info and notes. 
 
 
-## Deployment 
-[Open the App here](https://dark40.github.io/crm/)
+## Deployment (under maintenance)
+[Open the App here](https://dark40.github.io/crm/) (under maintenance)
 
 ## Technologies Used
 React, Ant Design
